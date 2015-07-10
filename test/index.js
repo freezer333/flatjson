@@ -46,9 +46,12 @@ describe("flatten json", function() {
        });
        it("should honor filters", function(){
             var results = flatten({
-                value: 0, func : function() {console.log("foo")}
-            }, ".", function(item) { return false;});
-            expect(Object.keys(results).length).to.equal(0);
+                value: 0, skip: 1, func : function() {console.log("foo")}
+            }, ".", function(key, item) { 
+                    if (key == "skip" || typeof(item)=='function') return false;
+                    return true;
+                });
+            expect(Object.keys(results).length).to.equal(1);
        });
    });
 

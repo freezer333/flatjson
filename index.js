@@ -5,7 +5,7 @@ function flattenJSON(json, delimiter, filter) {
   var d = delimiter || ".";
 
   if (!filter) {
-    filter = function (item) {
+    filter = function (key, item) {
       return !(typeof item === 'function');
     }
   }
@@ -21,7 +21,7 @@ function flattenJSON(json, delimiter, filter) {
     path = path || [];
     for (var key in obj) {
       item = obj[key];
-      if (obj.hasOwnProperty(key) && filter(item)) {
+      if (obj.hasOwnProperty(key) && filter(key, item)) {
         if (typeof item === 'object') {
           walk(item, visitor, path.concat(key));
         } else {
