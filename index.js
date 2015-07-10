@@ -1,8 +1,14 @@
 // this code is adapted from https://github.com/strongloop/node-foreman/blob/master/lib/envs.js
 
-function flattenJSON(json, delimiter) {
+function flattenJSON(json, delimiter, filter) {
   var flattened = {};
   var d = delimiter || ".";
+
+  if (!filter) {
+    filter = function (item) {
+      return !(typeof item === 'function');
+    }
+  }
 
   walk(json, function(path, item) {
     flattened[path.join(d)] = item;
@@ -15,10 +21,12 @@ function flattenJSON(json, delimiter) {
     path = path || [];
     for (var key in obj) {
       item = obj[key];
-      if (typeof item === 'object') {
-        walk(item, visitor, path.concat(key));
-      } else {
-        visitor(path.concat(key), item);
+      if (obj.hasOwnProperty(key) && filter(item)) {
+        if (typeof item === 'object') {
+          walk(item, visitor, path.concat(key));
+        } else {
+          visitor(path.concat(key), item);
+        }
       }
     }
   }

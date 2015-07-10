@@ -37,6 +37,19 @@ describe("flatten json", function() {
             var results = flatten({});
             expect(Object.keys(results).length).to.equal(0);
        });
+
+       it("should not serialize functions", function(){
+            var results = flatten({
+                value: 0, func : function() {console.log("foo")}
+            });
+            expect(Object.keys(results).length).to.equal(1);
+       });
+       it("should honor filters", function(){
+            var results = flatten({
+                value: 0, func : function() {console.log("foo")}
+            }, ".", function(item) { return false;});
+            expect(Object.keys(results).length).to.equal(0);
+       });
    });
 
    describe("behavior with custom delimiter", function() {
@@ -51,4 +64,6 @@ describe("flatten json", function() {
             expect(Object.keys(results).length).to.equal(6);
        });
    });
+
+
 });
