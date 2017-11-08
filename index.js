@@ -1,12 +1,14 @@
 // this code is adapted from https://github.com/strongloop/node-foreman/blob/master/lib/envs.js
 
-function flattenJSON(json, delimiter, filter) {
+function flattenJSON(json, delimiter, filter, interior) {
   var flattened = {};
   var d = delimiter || ".";
   var keep_interior = false;
 
   if (filter && !(typeof filter === "function")) {
     keep_interior = filter;
+  } else if (interior) {
+    keep_interior = interior;
   }
 
   if (!filter || !(typeof filter === "function")) {

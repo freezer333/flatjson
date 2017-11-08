@@ -1,6 +1,6 @@
 {
   "name": "flatjson",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "turn deeply nested json object into flat object(one level)",
   "main": "index.js",
   "scripts": {
