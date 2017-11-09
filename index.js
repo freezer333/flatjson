@@ -12,11 +12,11 @@ function flattenJSON(json, delimiter, filter, interior) {
   }
 
   if (!filter || !(typeof filter === "function")) {
-    filter = function(key, item) {
+    filter = function (key, item) {
       return !(typeof item === "function");
     };
   }
-  walk(json, function(path, item) {
+  walk(json, function (path, item) {
     flattened[path.join(d)] = item;
   });
 
@@ -27,14 +27,17 @@ function flattenJSON(json, delimiter, filter, interior) {
     path = path || [];
     for (var key in obj) {
       item = obj[key];
-      if (obj.hasOwnProperty(key) && filter(key, item)) {
-        if (typeof item === "object") {
-          walk(item, visitor, path.concat(key));
-          if (keep_interior) {
+      var full_key = path.concat(key);
+      if (filter(full_key.join(d), item)) {
+        if (obj.hasOwnProperty(key)) {
+          if (typeof item === "object") {
+            walk(item, visitor, path.concat(key));
+            if (keep_interior) {
+              visitor(path.concat(key), item);
+            }
+          } else {
             visitor(path.concat(key), item);
           }
-        } else {
-          visitor(path.concat(key), item);
         }
       }
     }
